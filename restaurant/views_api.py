@@ -14,19 +14,19 @@ from django.contrib.auth.models import User
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-
+    permission_classes = [IsAuthenticated]
     # def get(self, request):
     #     items = Booking.objects.all()
     #     serializer = BookingSerializer(items, many=True)
     #     return Response(serializer.data)  # return JSON
 
 
-
 # inheriting the rest_framework.generics.ListCreateView class. 
 # It handles the POST and GET method calls
 class MenuItemsView(generics.ListCreateAPIView):
     queryset = Menu.objects.all()
-    serializer_class = MenuSerializer    
+    serializer_class = MenuSerializer 
+    permission_classes = [IsAuthenticated]   
 
 # inherits the RetrieveUpdateAPIView and DestroyAPIView classes both 
 # imported from the rest_framework.generics module. 
@@ -34,6 +34,7 @@ class MenuItemsView(generics.ListCreateAPIView):
 class SingleMenuItemView(generics.RetrieveAPIView, generics.DestroyAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
+    permission_classes = [IsAuthenticated]
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

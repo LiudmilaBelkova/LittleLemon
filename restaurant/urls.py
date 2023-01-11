@@ -15,8 +15,8 @@ router.register(r'users', views_api.UserViewSet, basename='users')
 
 urlpatterns = [
     path('home', views.index, name='home'),
-    path('menu/items/', views_api.MenuItemsView.as_view()),
-    path('menu/items/<int:pk>', views_api.SingleMenuItemView.as_view()),
+    path('api/menu-items/', views_api.MenuItemsView.as_view()),
+    path('api/menu-items/<int:pk>', views_api.SingleMenuItemView.as_view()),
     path('', include(router.urls)),
 ]
 
