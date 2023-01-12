@@ -1,21 +1,18 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from rest_framework.authtoken.models import Token
-from rest_framework.test import APIRequestFactory, APIClient
+# from rest_framework.authtoken.models import Token
 
 import json
 from restaurant.models import Menu
-from restaurant.views_api import MenuItemsView
-from rest_framework.test import force_authenticate
 
 
 class MenuViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
         self.user.save()
-        token = Token.objects.create(user=self.user)
-        token.save()
+        # token = Token.objects.create(user=self.user)
+        # token.save()
 
         number_of_menus = 8
         for menu_id in range(number_of_menus):
