@@ -25,7 +25,7 @@ urlpatterns = [
     path('bookings', views.bookings, name='bookings'),
 
     # API endpoints
-    path('api/menu-items/', views_api.MenuItemsView.as_view()),
+    path('api/menu-items', views_api.MenuItemsView.as_view()),
     path('api/menu-items/<int:pk>', views_api.SingleMenuItemView.as_view()),
     path('api/', include(router.urls)),
       
