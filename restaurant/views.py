@@ -61,8 +61,7 @@ def bookings(request):
     date = request.GET.get('date',datetime.today().date())
     if date=='':
         date = datetime.today().date()
-    #date_from = datetime.strptime(date, "%y-%m-%d %H:%M").date()
-    #raise Exception(type(date), date)
+
     if(type(date) == type("string")):
         date_from = datetime.strptime(date, "%Y-%m-%d").date()
     else:
@@ -73,7 +72,6 @@ def bookings(request):
 
     bookings = Booking.objects.all().filter(booking_date__gte=date_from,
                                 booking_date__lt=date_to).order_by('booking_date')
-    #raise Exception(bookings)
 
     booking_json = serializers.serialize('json', bookings)
 
