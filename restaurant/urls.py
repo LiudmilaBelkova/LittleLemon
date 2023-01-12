@@ -11,13 +11,24 @@ from . import views_api
 from rest_framework.routers import DefaultRouter
 router = DefaultRouter(trailing_slash=False)
 router.register(r'users', views_api.UserViewSet, basename='users')
-# urlpatterns += router.urls
+router.register(r'bookings', views_api.BookingViewSet)
+
 
 urlpatterns = [
-    path('home', views.index, name='home'),
+    # HTML pages
+    path('', views.home, name='home'),
+    path('about/', views.about, name="about"),
+    path('book/', views.book, name="book"),
+    path('reservations/', views.reservations, name="reservations"),
+    path('menu/', views.menu, name="menu"),
+    path('menu_item/<int:pk>/', views.display_menu_item, name="menu_item"),  
+    path('bookings', views.bookings, name='bookings'),
+
+    # API endpoints
     path('api/menu-items/', views_api.MenuItemsView.as_view()),
     path('api/menu-items/<int:pk>', views_api.SingleMenuItemView.as_view()),
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
+      
 ]
 
 

@@ -31,7 +31,8 @@ class MenuItemsView(generics.ListCreateAPIView):
 # inherits the RetrieveUpdateAPIView and DestroyAPIView classes both 
 # imported from the rest_framework.generics module. 
 # This class is responsible for processing GET, PUT and DELETE method calls.
-class SingleMenuItemView(generics.RetrieveAPIView, generics.DestroyAPIView):
+class SingleMenuItemView(generics.RetrieveAPIView, generics.DestroyAPIView, 
+    generics.UpdateAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
     permission_classes = [IsAuthenticated]

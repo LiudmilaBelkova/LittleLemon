@@ -18,18 +18,15 @@ from django.urls import path, include
 from restaurant import views_api
 from rest_framework.authtoken.views import obtain_auth_token
 
-from rest_framework.routers import DefaultRouter
-router = DefaultRouter(trailing_slash=False)
-router.register(r'tables', views_api.BookingViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('restaurant/', include('restaurant.urls')),
-    path('restaurant/booking/', include(router.urls)),
+    #path('restaurant/', include('restaurant.urls')),
     path('', include('restaurant.urls')),
+    path('', include('UserComments.urls')),
     
     # POST method to get API Bearer Token
     path('api/token', obtain_auth_token), # or call http://127.0.0.1:8000/auth/token/login/ (this is djoser)
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.authtoken'))
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth/', include('djoser.urls.authtoken'))
 ]

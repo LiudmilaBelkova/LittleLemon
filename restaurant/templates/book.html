@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section>
+  <article>
+    <h1>Make a reservation</h1>
+    <!--Begin row-->
+    <div class="row">
+      <!--Begin col-->
+      <div class="column">
+          {% csrf_token %}
+          <form method="POST" id="form">
+            <!-- {% csrf_token %} -->
+            <p>
+              <label for="first_name">Name:</label>
+              <input type="text" placeholder="Your Name" maxlength="200" required="" id="first_name">
+            </p>
+            <p>
+              <label for="booking_date">Booking date:</label>
+              <input type="datetime-local" placeholder="Booking date" required="" id="booking_date">
+            </p>
+      <!--
+            <p>
+              <label for="reservation_slot">Reservation time:</label>
+              <select id="reservation_slot">
+                <option value="0" disabled>Select time</option>
+              </select>
+            </p> -->
+            <p>
+              <label for="no_of_guests">Number of guests:</label>
+              <input type="number" placeholder="Number of guests" required="" id="no_of_guests">
+            </p>            
+            <button type="button" id="button">Reserve</button>
+          </form>
+      </div>
+      <!--End col-->
+
+      <!--Begin col-->
+      <div class="column">
+        <h2>Bookings For <span id="today"></span></h2>
+        <div id="bookings">
+        </div>
+      </div>
+      <!--End col-->
+    </div>
+    <!--End row-->
+
+
+
+
+  </article>
+</section>
+<script>
+
+  const date = new Date()
+
+  //const date_str = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+  //const date_str = `${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}/${date.getFullYear()}T18:00`;
+  const date_str = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T18:00`;
+  //console.log(date_str);
+  document.getElementById('booking_date').value = date_str;
+  //console.log(document.getElementById('booking_date').value)
+
+  getBookings()
+
+
+  /*  Step 10: Part two */
+  document.getElementById('booking_date').addEventListener("change", getBookings)
+
+
+  function getBookings() {
+    let reserved_slots = []
+    let date = document.getElementById('booking_date').value;
+    date_part = date.substring(0, 10)
+    // console.log(date, "???", typeof date) ;
+    document.getElementById('today').innerHTML = date_part
+    
+    fetch("{% url 'bookings' %}" + '?date=' + date_part)
+      .then(response => response.json())
+      .then(data => {
+        reserved_slots = []
+        bookings = ''
+        console.log("getBookings.data: ", data);
+        
+        for(const item of data) {
+          console.log(item.fields);
+          bookings += `<p>${item.fields.name} - ${item.fields.booking_date}</p>`;
+        }
+    
+        if(bookings==''){
+          bookings = "No bookings"
+        }
+        document.getElementById('bookings').innerHTML = bookings
+      })
+  }
+
+  document.getElementById('button').addEventListener('click', function (e) {
+    const formdata = {
+      name: document.getElementById('first_name').value,
+      booking_date: document.getElementById('booking_date').value,
+      no_of_guests: document.getElementById('no_of_guests').value,
+    }
+
+    fetch("{% url 'bookings' %}", { method: 'post', body: JSON.stringify(formdata) })
+      .then(response => response.text())
+      .then(data => {
+        getBookings()
+      })
+  })
+</script>
+{% endblock %}
+
